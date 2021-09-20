@@ -1,24 +1,50 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import {
+  AmplifyAuthenticator,
+  AmplifySignOut,
+  AmplifySignUp,
+} from '@aws-amplify/ui-react';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import './App.css';
+import Todos from './components/Todos';
+import InputForm from './components/InputForm';
 
 function App() {
+  const [authState, setAuthState] = useState();
+  const [user, setUser] = useState();
+
+  const onAuthStateChange = () => {
+    onAuthUIStateChange((nextAuthState, authData) => {
+      setAuthState(nextAuthState);
+      setUser(authData);
+    });
+  };
+
+  useEffect(() => {
+    onAuthStateChange();
+  }, []);
+
+  if (authState === AuthState.SignedIn && user)
+    return (
+      <div className="App">
+        <AmplifySignOut />
+        <div>Hello, {user.username}</div>
+        <InputForm />
+        <Todos />
+      </div>
+    );
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AmplifyAuthenticator>
+      <AmplifySignUp
+        slot="sign-up"
+        formFields={[
+          { type: 'username' },
+          { type: 'password' },
+          { type: 'email' },
+        ]}
+      />
+    </AmplifyAuthenticator>
   );
 }
 
