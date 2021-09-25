@@ -10,6 +10,7 @@ import { setContext } from '@apollo/client/link/context';
 import Amplify, { Auth } from 'aws-amplify';
 import config from './config';
 import App from './App';
+import AuthProvider from './providers/AuthProvider';
 
 Amplify.configure(config);
 
@@ -44,7 +45,9 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <ApolloProvider client={client}>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </ApolloProvider>,
   document.getElementById('root')
 );
