@@ -1,7 +1,5 @@
-import React, { useContext, Fragment, useState } from 'react';
+import React, { useContext, Fragment } from 'react';
 import './App.css';
-import Todos from './components/Todos';
-import InputForm from './components/InputForm';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
 import { AuthContext } from './context/AuthContext';
@@ -11,9 +9,7 @@ import ForgotPassword from './components/ForgotPassword';
 import ConfirmForgotPassword from './components/ConfirmForgotPassword';
 
 function App() {
-  const [changePasswordOpen, setChangePasswordOpen] = useState(false);
-  const { authState, setAuthState, user, signOut, setError } =
-    useContext(AuthContext);
+  const { authState, setAuthState, setError } = useContext(AuthContext);
 
   return (
     <div className="App">
@@ -92,24 +88,6 @@ function App() {
         <Fragment>
           <h2>Reset Password</h2>
           <ConfirmForgotPassword />
-        </Fragment>
-      )}
-
-      {authState === 'signedIn' && user && (
-        <Fragment>
-          <button onClick={async () => await signOut()}>Logout</button>
-          <button onClick={() => setChangePasswordOpen(true)}>
-            Change Password
-          </button>
-          <div>Hello, {user.username}</div>
-          {changePasswordOpen ? (
-            <ResetPassword setChangePasswordOpen={setChangePasswordOpen} />
-          ) : (
-            <Fragment>
-              <InputForm />
-              <Todos />
-            </Fragment>
-          )}
         </Fragment>
       )}
     </div>

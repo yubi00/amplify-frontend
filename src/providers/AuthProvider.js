@@ -19,10 +19,10 @@ const AuthProvider = ({ children }) => {
         },
       });
       console.log(user);
+      setUser(user);
       setAuthState('confirmSignUp');
       setLoading(false);
       setError('');
-      setUser(user);
     } catch (error) {
       console.log('error signing up:', error);
       setError(error.message);
@@ -48,10 +48,8 @@ const AuthProvider = ({ children }) => {
   const signIn = async ({ username, password }) => {
     try {
       setLoading(true);
-      const user = await Auth.signIn(username, password);
-      console.log(user);
+      await Auth.signIn(username, password);
       setAuthState('signedIn');
-      setUser(user);
       setLoading(false);
     } catch (error) {
       console.log('error signing in', error);
@@ -129,6 +127,7 @@ const AuthProvider = ({ children }) => {
         authState,
         setAuthState,
         user,
+        setUser,
         error,
         setError,
         loading,

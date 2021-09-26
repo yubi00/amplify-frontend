@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useHistory } from 'react-router-dom';
 
 const initialValues = {
   username: '',
@@ -9,6 +10,7 @@ const initialValues = {
 const Login = () => {
   const [values, setValues] = useState(initialValues);
   const { signIn, error, setError, loading } = useContext(AuthContext);
+  const history = useHistory();
 
   const onChange = (e) => {
     setError('');
@@ -22,6 +24,7 @@ const Login = () => {
     e.preventDefault();
     await signIn(values);
     setValues(initialValues);
+    history.push('/todos');
   };
 
   return (

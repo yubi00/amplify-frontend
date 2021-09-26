@@ -11,6 +11,7 @@ import Amplify, { Auth } from 'aws-amplify';
 import config from './config';
 import App from './App';
 import AuthProvider from './providers/AuthProvider';
+import AppRouter from './routes/AppRouter';
 
 Amplify.configure(config);
 
@@ -46,7 +47,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <AuthProvider>
-      <App />
+      <AppRouter>
+        <App />
+      </AppRouter>
     </AuthProvider>
   </ApolloProvider>,
   document.getElementById('root')
