@@ -3,7 +3,6 @@ import { Auth } from 'aws-amplify';
 import { AuthContext } from '../context/AuthContext';
 
 const AuthProvider = ({ children }) => {
-  const [authState, setAuthState] = useState('signIn');
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +19,6 @@ const AuthProvider = ({ children }) => {
       });
       console.log(user);
       setUser(user);
-      setAuthState('confirmSignUp');
       setLoading(false);
       setError('');
     } catch (error) {
@@ -35,7 +33,6 @@ const AuthProvider = ({ children }) => {
       setLoading(true);
       const user = await Auth.confirmSignUp(username, code);
       setUser(user);
-      setAuthState('signIn');
       setLoading(false);
       setError('');
     } catch (error) {
@@ -49,7 +46,6 @@ const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       await Auth.signIn(username, password);
-      setAuthState('signedIn');
       setLoading(false);
     } catch (error) {
       console.log('error signing in', error);
@@ -62,7 +58,6 @@ const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       await Auth.forgotPassword(username);
-      setAuthState('confirmForgotPassword');
       setError('');
       setLoading(false);
     } catch (error) {
@@ -72,15 +67,10 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const confirmForgotPassword = async ({
-    username,
-    code,
-    password: new_password,
-  }) => {
+  const confirmForgotPassword = async (username, code, new_password) => {
     try {
       setLoading(true);
       await Auth.forgotPasswordSubmit(username, code, new_password);
-      setAuthState('signIn');
       setError('');
       setLoading(false);
     } catch (error) {
@@ -107,7 +97,6 @@ const AuthProvider = ({ children }) => {
     try {
       await Auth.signOut();
       setUser(null);
-      setAuthState('signIn');
       setError('');
     } catch (error) {
       console.log('error signing out: ', error);
@@ -124,8 +113,6 @@ const AuthProvider = ({ children }) => {
         confirmForgotPassword,
         changePassword,
         signOut,
-        authState,
-        setAuthState,
         user,
         setUser,
         error,

@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { Link, useHistory } from 'react-router-dom';
 
 const initialValues = {
   username: '',
@@ -8,6 +9,7 @@ const initialValues = {
 };
 
 const SignUp = () => {
+  const history = useHistory();
   const [values, setValues] = useState(initialValues);
   const { signUp, error, loading, setError } = useContext(AuthContext);
 
@@ -22,10 +24,12 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signUp(values);
+    history.push('/confirm-signup');
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Signup</h2>
       {error && <p> {error} </p>}
       <input
         type="text"
@@ -52,6 +56,9 @@ const SignUp = () => {
         required
       />
       <button>{loading ? 'Loading...' : 'Sign Up'} </button>
+      <p>
+        <Link to="/">Login Instead</Link>
+      </p>
     </form>
   );
 };

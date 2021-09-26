@@ -27,6 +27,7 @@ const ResetPassword = ({ setChangePasswordOpen }) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Reset Password</h2>
       {error && <p> {error} </p>}
       <input
         type="text"

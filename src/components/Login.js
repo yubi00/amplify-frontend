@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const initialValues = {
   username: '',
@@ -29,6 +29,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Login</h2>
       {error && <p> {error} </p>}
       <input
         type="text"
@@ -47,6 +48,13 @@ const Login = () => {
         required
       />
       <button>{loading ? 'Loading...' : 'Login'}</button>
+      <p>
+        New user? <Link to="/signup">Sign Up </Link>
+      </p>
+      <p>
+        Forgot password?
+        <Link to="/forgot-password">Forgot Password</Link>
+      </p>
     </form>
   );
 };

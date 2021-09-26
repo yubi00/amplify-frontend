@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router';
 import { AuthContext } from '../context/AuthContext';
 
 const ConfirmSignUp = () => {
+  const history = useHistory();
   const [code, setCode] = useState('');
   const { confirmSignUp, error, loading, user } = useContext(AuthContext);
 
@@ -9,6 +11,7 @@ const ConfirmSignUp = () => {
     e.preventDefault();
     console.log('user data: ', user);
     await confirmSignUp(user.username, code);
+    history.push('/');
   };
 
   return (

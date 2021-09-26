@@ -1,13 +1,14 @@
-import { useContext, useState } from 'react';
+import { Fragment, useContext, useState } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const initialValues = {
-  username: '',
   password: '',
-  code: '',
 };
 
 const SignUp = () => {
+  const history = useHistory();
+  const [message, setMessage] = useState('');
   const [values, setValues] = useState(initialValues);
   const { confirmForgotPassword, error, loading, setError } =
     useContext(AuthContext);
@@ -22,37 +23,39 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await confirmForgotPassword(values);
+
+    //get username and code from pathname
+    const url = new URLSearchParams(window.location.search);
+    const code = url.get('confirmation_code');
+    const username = url.get('user_name');
+
+    await confirmForgotPassword(username, code, values.password);
+    setMessage('Your password has been changed successfully');
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Reset Password</h2>
+
       {error && <p> {error} </p>}
-      <input
-        type="text"
-        name="username"
-        placeholder="username"
-        value={values.username}
-        onChange={onChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="password"
-        value={values.password}
-        onChange={onChange}
-        required
-      />
-      <input
-        type="text"
-        name="code"
-        placeholder="code"
-        value={values.code}
-        onChange={onChange}
-        required
-      />
-      <button>{loading ? 'Loading...' : 'Change Password'} </button>
+      {message ? (
+        <h3> {message} </h3>
+      ) : (
+        <Fragment>
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={values.password}
+            onChange={onChange}
+            required
+          />
+          <button>{loading ? 'Loading...' : 'Change Password'} </button>
+        </Fragment>
+      )}
+      <div>
+        <Link to="/">Login</Link>
+      </div>
     </form>
   );
 };
