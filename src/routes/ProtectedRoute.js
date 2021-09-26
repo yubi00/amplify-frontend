@@ -15,7 +15,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     } catch (error) {
       console.log('auth error: ', error);
       setLoaded(true);
-      setError(error);
+      if (error === '') {
+        setError(error);
+      }
       setUser(null);
     }
   };
