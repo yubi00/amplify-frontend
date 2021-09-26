@@ -5,7 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const [loaded, setLoaded] = useState(false);
-  const { user, setUser, error, setError } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
 
   const getAuthenticatedUser = async () => {
     try {
@@ -15,9 +15,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     } catch (error) {
       console.log('auth error: ', error);
       setLoaded(true);
-      if (error === '') {
-        setError(error);
-      }
       setUser(null);
     }
   };
@@ -27,7 +24,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
   }, []);
 
   if (!loaded) return <p>Loading...</p>;
-  if (error) return <Redirect to="/" />;
 
   return (
     <Route
